@@ -34,8 +34,13 @@ function App() {
 
   return (
     <div>
-      <Search onSearchChange={onSearchChange} />
-      <Weather weatherData={weatherData} />
+      <div className="flex items-center justify-start w-full bg-slate-200 h-[100vh] flex-col">
+        <h1 className="font-bold text-3xl py-8">Weather App</h1>
+        <Search onSearchChange={onSearchChange} />
+        <div className="flex items-center justify-center w-80 h-80 bg-slate-200 rounded-md p-6 m-6">
+          <Weather weatherData={weatherData} />
+        </div>
+      </div>
     </div>
   );
 }

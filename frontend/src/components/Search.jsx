@@ -22,7 +22,6 @@ export default function Search({ onSearchChange }) {
           try {
             const response = await axios.get(`api/cities?namePrefix=${query}`);
             const cities = response.data.data;
-            console.log(cities);
 
             //Use a Map to remove duplicates based on city.name and city.country (there is duplicates in this api)
             const cityMap = new Map();
@@ -77,7 +76,7 @@ export default function Search({ onSearchChange }) {
 
   return (
     // using material UI autocomplete component that is using the different cities that are suggested by the prefix given to the api from the user input
-    <div>
+    <div className="bg-slate-200 p-6 m-6 rounded-md space-x-4 w-80">
       <Autocomplete
         freeSolo
         options={options}
