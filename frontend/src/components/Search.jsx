@@ -98,6 +98,7 @@ export default function Search({ onSearchChange }) {
             {...params}
             label="Search for a city"
             variant="outlined"
+            name="preferredLocation"
             InputProps={{
               ...params.InputProps,
               onKeyDown: (e) => {
