@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Weather from "./components/Weather";
+import Search from "./components/Search";
 
 function App() {
   const [weatherData, setWeatherData] = useState(null);
@@ -24,8 +25,16 @@ function App() {
     fetchWeather();
   }, [coordinates]);
 
+  const onSearchChange = (selectedCity) => {
+    setCoordinates({
+      lat: selectedCity.latitude,
+      lon: selectedCity.longitude,
+    });
+  };
+
   return (
     <div>
+      <Search onSearchChange={onSearchChange} />
       <Weather weatherData={weatherData} />
     </div>
   );
