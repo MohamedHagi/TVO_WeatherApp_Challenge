@@ -2,11 +2,34 @@ const express = require("express");
 const axios = require("axios");
 const cors = require("cors");
 require("dotenv").config();
+const mongoose = require("mongoose");
 
 const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(cors());
+app.use(express.json());
+
+// Connecting to MongoDB
+
+mongoose.connect(process.env.MONGODB_URI, {
+  useNewUrlParser: true,
+});
+
+const db = mongoose.connection;
+
+// Defining the user schema
+const userSchema = new mongoose.Schema({
+  username: { type: String, required: true },
+  email: { type: String, required: true, unique: true },
+  preferredLocation: {
+    lat: { type: String, required: true },
+    long: { type: String, required: true },
+  },
+});
+
+//  Creating a user model
+const User = mongoose.model("User", userSchema);
 
 //Adding lat and long as parameters for the API request
 app.get("/api/weather", async (req, res) => {
@@ -50,6 +73,52 @@ app.get("/api/cities", async (req, res) => {
   } catch (error) {
     console.error("Error fetching cities:", error);
     res.status(500).json({ error: "Error fetching cities" });
+  }
+});
+
+//Endpoint to accept users name, email, latitude, and longitude
+app.post("/api/signup", async (req, res) => {
+  const { username, email, preferredLocation } = req.body;
+
+  if (
+    !username ||
+    !email ||
+    !preferredLocation.lat ||
+    !preferredLocation.long
+  ) {
+    return res
+      .status(400)
+      .json({ error: "Name, email, latitude, and longitude are required" });
+  }
+
+  try {
+    const newUser = new User({
+      username,
+      email,
+      preferredLocation,
+    });
+    await newUser.save();
+    res
+      .status(201)
+      .json({ message: "User data saved successfully", user: newUser });
+  } catch (error) {
+    if (error.code === 11000) {
+      // Duplicate key error for unique fields
+      res.status(409).json({ error: "Email already exists" });
+    } else {
+      res.status(500).json({ error: "Error saving user data" });
+    }
+  }
+});
+
+app.get("/api/users", async (req, res) => {
+  try {
+    // Fetch all users from the database
+    const users = await User.find();
+    res.json(users);
+  } catch (error) {
+    console.error("Error retrieving users:", error);
+    res.status(500).json({ error: "Error retrieving users" });
   }
 });
 
