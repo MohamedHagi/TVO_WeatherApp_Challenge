@@ -76,12 +76,13 @@ export default function Search({ onSearchChange }) {
 
   return (
     // using material UI autocomplete component that is using the different cities that are suggested by the prefix given to the api from the user input
-    <div className="bg-slate-200 p-6 m-6 rounded-md space-x-4 w-80">
+    <div className=" p-6 m-6 rounded-md space-x-4 w-80">
       <Autocomplete
         freeSolo
         options={options}
         loading={loading}
         inputValue={inputValue}
+        autoHighlight
         onInputChange={(event, newInputValue) => {
           setInputValue(newInputValue);
         }}
@@ -99,6 +100,11 @@ export default function Search({ onSearchChange }) {
             variant="outlined"
             InputProps={{
               ...params.InputProps,
+              onKeyDown: (e) => {
+                if (e.key === "Enter" && options.length < 1) {
+                  e.stopPropagation();
+                }
+              },
               endAdornment: (
                 <>
                   {loading ? (
