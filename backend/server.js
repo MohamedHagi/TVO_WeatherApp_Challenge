@@ -29,6 +29,9 @@ const userSchema = new mongoose.Schema({
 //  Creating a user model
 const User = mongoose.model("User", userSchema);
 
+app.get("/", async (req, res) => {
+  res.send("Hello");
+});
 //Adding lat and long as parameters for the API request
 app.get("/api/weather", async (req, res) => {
   const { lat, lon } = req.query;
