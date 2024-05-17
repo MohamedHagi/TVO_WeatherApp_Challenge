@@ -14,6 +14,7 @@ function App() {
 
   const [userData, setUserData] = useState(null);
   const [showSignup, setShowSignup] = useState(false);
+  const [preferredLocation, setPreferredLocation] = useState(null);
 
   //fetching the current weather using the lat and lon
   useEffect(() => {
@@ -30,6 +31,23 @@ function App() {
 
     fetchWeather();
   }, [coordinates]);
+
+  useEffect(() => {
+    const fetchPreferredLocation = async (preferredCity) => {
+      try {
+        const response = await axios.get(
+          `/api/weather?lat=${preferredCity.lat}&lon=${preferredCity.long}`
+        );
+        setPreferredLocation(response.data.name);
+      } catch (error) {
+        console.error("Error fetching weather data:", error);
+      }
+    };
+
+    if (userData) {
+      fetchPreferredLocation(userData.preferredLocation);
+    }
+  }, [userData]);
 
   //setting new coordinates given by the selected city in the search, triggering a re-render and updating the weather
   const onSearchChange = (selectedCity) => {
@@ -69,16 +87,16 @@ function App() {
   };
 
   return (
-    <div className="flex justify-around">
-      <div className="flex items-center justify-center w-80 h-[100] flex-col">
+    <div className="flex flex-col-reverse md:flex-row items-center md:justify-around">
+      <div className="flex flex-col justify-center items-center w-[80%] md:w-80 h-[100] md:h-auto md:flex-shrink-0">
         <h1 className="font-bold text-3xl py-8">Weather App</h1>
         <Search onSearchChange={onSearchChange} />
-        <div className="flex items-center justify-center w-80 h-80 bg-slate-200 rounded-md p-6 m-6">
+        <div className="flex justify-center items-center w-full h-80 md:h-auto bg-slate-200 rounded-md p-6 m-6">
           <Weather weatherData={weatherData} />
         </div>
       </div>
-      <div>
-        {!userData && (
+      <div className="w-[70%] md:w-80">
+        {!userData ? (
           <div>
             {!showSignup ? (
               <Signin
@@ -92,29 +110,29 @@ function App() {
               />
             )}
           </div>
-        )}
-
-        {userData && (
-          <div class="bg-slate-200 mt-4 overflow-hidden shadow rounded-lg border">
-            <div class="px-4 py-5 sm:px-6">
-              <h3 class="text-lg leading-6 font-medium text-gray-900">
+        ) : (
+          <div className="bg-slate-200 mt-4 overflow-hidden shadow rounded-lg border">
+            <div className="px-4 py-5 sm:px-6">
+              <h3 className="text-lg leading-6 font-medium text-gray-900">
                 User Profile
               </h3>
             </div>
-            <div class="border-t border-gray-200 px-4 py-5 sm:p-0">
-              <dl class="sm:divide-y sm:divide-gray-200">
-                <div class="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                  <dt class="text-sm font-medium text-gray-500">Username</dt>
-                  <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+            <div className="border-t border-gray-200 px-4 py-5 sm:p-0">
+              <dl className="sm:divide-y sm:divide-gray-200">
+                <div className="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt className="text-sm font-medium text-gray-500">
+                    Username
+                  </dt>
+                  <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
                     {userData.username}
                   </dd>
                 </div>
-                <div class="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                  <dt class="text-sm font-medium text-gray-500">
-                    Preferred Location
+                <div className="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt className="text-sm font-medium text-gray-500">
+                    Preferred Location:
                   </dt>
-                  <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                    {weatherData.name}
+                  <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                    {preferredLocation}
                   </dd>
                 </div>
               </dl>
