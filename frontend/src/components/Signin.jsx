@@ -16,7 +16,7 @@ export default function Signin({ handleSignin, setShowSignup }) {
   return (
     <div>
       <form
-        className="flex items-center flex-col bg-white rounded shadow-lg p-12 mt-12"
+        className="flex items-center flex-col bg-slate-200 rounded  p-12 mt-12"
         onSubmit={handleSubmit}
       >
         <label className="font-semibold text-xs" htmlFor="email">
@@ -25,7 +25,7 @@ export default function Signin({ handleSignin, setShowSignup }) {
         <input
           type="email"
           id="email"
-          className="flex items-center h-12 px-4 my-2 w-64 bg-gray-200 mt-2 rounded focus:outline-none focus:ring-2"
+          className="flex items-center h-12 px-4 my-2 w-64 bg-white mt-2 rounded focus:outline-none focus:ring-2"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required

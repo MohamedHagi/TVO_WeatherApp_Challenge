@@ -97,6 +97,7 @@ export default function Search({ onSearchChange }) {
           <TextField
             {...params}
             label="Search for a city"
+            className="bg-white"
             variant="outlined"
             name="preferredLocation"
             InputProps={{
