@@ -4,7 +4,7 @@ export default function Weather({ weatherData }) {
   return (
     <>
       {weatherData && (
-        <div className="flex flex-col items-center p-8 rounded-md w-80 sm:px-12 dark:bg-gray-50 dark:text-gray-800">
+        <div className="flex flex-col items-center p-8 rounded-md w-80 sm:px-12 text-gray-800">
           <div className="text-center">
             <div className="flex items-center space-x-2">
               <h2 className="text-xl font-semibold">{weatherData.name}</h2>
