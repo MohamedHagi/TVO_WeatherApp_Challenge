@@ -60,7 +60,7 @@ function App() {
   const handleSignup = async (userData) => {
     try {
       const response = await axios.post("/api/signup", userData);
-      console.log("User signed up successfully:", response.data);
+
       setUserData(response.data.user);
       setCoordinates({
         lat: userData.preferredLocation.lat,
