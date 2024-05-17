@@ -75,17 +75,40 @@ export default function Search({ onSearchChange }) {
   };
 
   return (
+    // using material UI autocomplete component that is using the different cities that are suggested by the prefix given to the api from the user input
     <div>
       <Autocomplete
         freeSolo
         options={options}
+        loading={loading}
         inputValue={inputValue}
         onInputChange={(event, newInputValue) => {
           setInputValue(newInputValue);
         }}
         onChange={handleOnChange}
+        getOptionLabel={(option) => `${option.name}, ${option.countryCode}`}
+        renderOption={(props, option) => (
+          <li {...props} key={option.key}>
+            {option.name}, {option.countryCode}
+          </li>
+        )}
         renderInput={(params) => (
-          <TextField {...params} label="Search for a city" variant="outlined" />
+          <TextField
+            {...params}
+            label="Search for a city"
+            variant="outlined"
+            InputProps={{
+              ...params.InputProps,
+              endAdornment: (
+                <>
+                  {loading ? (
+                    <CircularProgress color="inherit" size={20} />
+                  ) : null}
+                  {params.InputProps.endAdornment}
+                </>
+              ),
+            }}
+          />
         )}
       />
     </div>
