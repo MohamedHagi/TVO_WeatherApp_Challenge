@@ -16,8 +16,6 @@ mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
 });
 
-const db = mongoose.connection;
-
 // Defining the user schema
 const userSchema = new mongoose.Schema({
   username: { type: String, required: true },
