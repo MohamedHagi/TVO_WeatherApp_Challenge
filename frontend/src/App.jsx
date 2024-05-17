@@ -54,13 +54,15 @@ function App() {
   };
 
   return (
-    <div className="flex justify-center">
-      <div className="flex items-center justify-center w-80 h-[100vh] flex-col">
+    <div className="flex justify-around">
+      <div className="flex items-center justify-center w-80 h-[100] flex-col">
         <h1 className="font-bold text-3xl py-8">Weather App</h1>
         <Search onSearchChange={onSearchChange} />
         <div className="flex items-center justify-center w-80 h-80 bg-slate-200 rounded-md p-6 m-6">
           <Weather weatherData={weatherData} />
         </div>
+      </div>
+      <div>
         {showSignup ? (
           <Signup handleSignup={handleSignup} />
         ) : (
@@ -77,8 +79,7 @@ function App() {
                 </p>
                 <p>
                   <span className="font-semibold">Preferred Location:</span>{" "}
-                  {userData.preferredLocation.lat},{" "}
-                  {userData.preferredLocation.long}
+                  {weatherData.name}
                 </p>
               </div>
             )}
