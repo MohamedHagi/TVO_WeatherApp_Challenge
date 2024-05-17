@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Search from "./Search";
 
-function Signup({ handleSignup }) {
+function Signup({ handleSignup, setShowSignup }) {
   const [userData, setUserData] = useState({
     username: "",
     email: "",
@@ -51,7 +51,7 @@ function Signup({ handleSignup }) {
           onChange={handleChange}
           required
         />
-        <label className="font-semibold text-xs" htmlFor="usernameField">
+        <label className="font-semibold text-xs" htmlFor="emailField">
           Email
         </label>
         <input
@@ -63,14 +63,28 @@ function Signup({ handleSignup }) {
           onChange={handleChange}
           required
         />
-
+        <label className="font-semibold text-xs">
+          Enter Preferred Location:{" "}
+        </label>
         <Search onSearchChange={onSearchChange} />
 
         <button
-          className="flex items-center justify-center h-12 px-6 w-64 bg-blue-600 mt-8 rounded font-semibold text-sm text-blue-100 hover:bg-blue-700"
+          className="flex items-center justify-center h-12 px-6 w-64 bg-blue-600 mt-2 rounded font-semibold text-sm text-blue-100 hover:bg-blue-700"
           type="submit"
         >
           Sign Up
+        </button>
+        <button
+          className="flex items-center justify-center h-12 px-6 w-64 bg-blue-600 mt-2 rounded font-semibold text-sm text-blue-100 hover:bg-blue-700"
+          type="submit"
+          onClick={() => {
+            setShowSignup(false);
+          }}
+        >
+          <p>
+            Already have an account? <br />
+            Sign in
+          </p>
         </button>
       </form>
     </div>
