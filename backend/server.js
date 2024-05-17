@@ -122,6 +122,29 @@ app.get("/api/users", async (req, res) => {
   }
 });
 
+//endpont to sign in with email
+app.post("/api/signin", async (req, res) => {
+  const { email } = req.body;
+
+  if (!email) {
+    return res.status(400).json({ error: "Email is required" });
+  }
+
+  try {
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    // If user is found, return user data
+    res.json({ message: "User signed in successfully", user });
+  } catch (error) {
+    console.error("Error signing in:", error);
+    res.status(500).json({ error: "Error signing in" });
+  }
+});
+
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });
