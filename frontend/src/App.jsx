@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import Weather from "./components/Weather";
 
 function App() {
   const [weatherData, setWeatherData] = useState(null);
@@ -25,14 +26,7 @@ function App() {
 
   return (
     <div>
-      <h1>Weather App</h1>
-      {weatherData && (
-        <div>
-          <h2>{weatherData.name}</h2>
-          <p>{Math.round(weatherData.main.temp)} °C</p>
-          <p>{weatherData.weather[0].description}</p>
-        </div>
-      )}
+      <Weather weatherData={weatherData} />
     </div>
   );
 }
