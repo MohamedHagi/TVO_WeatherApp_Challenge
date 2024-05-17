@@ -30,7 +30,7 @@ const userSchema = new mongoose.Schema({
 const User = mongoose.model("User", userSchema);
 
 app.get("/", async (req, res) => {
-  res.send("Hello");
+  res.send("Weather App Backend");
 });
 //Adding lat and long as parameters for the API request
 app.get("/api/weather", async (req, res) => {
