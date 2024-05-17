@@ -26,6 +26,7 @@ app.get("/api/weather", async (req, res) => {
   }
 });
 
+//Added route to fetch cities from external API
 app.get("/api/cities", async (req, res) => {
   const { namePrefix } = req.query;
   try {
@@ -33,11 +34,11 @@ app.get("/api/cities", async (req, res) => {
       method: "GET",
       url: "https://wft-geo-db.p.rapidapi.com/v1/geo/cities",
       params: {
-        minPopulation: 10000000,
+        minPopulation: 1000000,
         namePrefix: namePrefix,
       },
       headers: {
-        "X-RapidAPI-Key": process.env.RAPIDAPI_KEY, // Using the API key from .env
+        "X-RapidAPI-Key": process.env.RAPIDAPI_KEY,
         "X-RapidAPI-Host": "wft-geo-db.p.rapidapi.com",
       },
     };
