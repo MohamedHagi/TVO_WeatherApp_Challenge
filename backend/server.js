@@ -26,6 +26,32 @@ app.get("/api/weather", async (req, res) => {
   }
 });
 
+app.get("/api/cities", async (req, res) => {
+  const { namePrefix } = req.query;
+  try {
+    const options = {
+      method: "GET",
+      url: "https://wft-geo-db.p.rapidapi.com/v1/geo/cities",
+      params: {
+        minPopulation: 10000000,
+        namePrefix: namePrefix,
+      },
+      headers: {
+        "X-RapidAPI-Key": process.env.RAPIDAPI_KEY, // Using the API key from .env
+        "X-RapidAPI-Host": "wft-geo-db.p.rapidapi.com",
+      },
+    };
+
+    const response = await axios.request(options);
+    const cities = response.data;
+
+    res.json(cities);
+  } catch (error) {
+    console.error("Error fetching cities:", error);
+    res.status(500).json({ error: "Error fetching cities" });
+  }
+});
+
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });
