@@ -2,13 +2,17 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Weather from "./components/Weather";
 import Search from "./components/Search";
+import Signup from "./components/Signup";
 
 function App() {
   const [weatherData, setWeatherData] = useState(null);
   const [coordinates, setCoordinates] = useState({
     lat: 43.7001,
     lon: -79.4163,
-  });
+  }); //using toronto as default, with more time could use geolocationAPI to get users location on first load
+
+  const [userData, setUserData] = useState(null);
+  const [showSignup, setShowSignup] = useState(true);
 
   //fetching the current weather using the lat and lon
   useEffect(() => {
@@ -18,7 +22,6 @@ function App() {
           `/api/weather?lat=${coordinates.lat}&lon=${coordinates.lon}`
         );
         setWeatherData(response.data);
-        updateBackground(response.data.weather[0].icon);
       } catch (error) {
         console.error("Error fetching weather data:", error);
       }
@@ -35,6 +38,21 @@ function App() {
     });
   };
 
+  const handleSignup = async (userData) => {
+    try {
+      const response = await axios.post("/api/signup", userData);
+      console.log("User signed up successfully:", response.data);
+      setUserData(response.data.user);
+      setCoordinates({
+        lat: userData.preferredLocation.lat,
+        lon: userData.preferredLocation.long,
+      });
+      setShowSignup(false);
+    } catch (error) {
+      console.error("Error signing up:", error);
+    }
+  };
+
   return (
     <div className="flex justify-center">
       <div className="flex items-center justify-center w-80 h-[100vh] flex-col">
@@ -43,6 +61,29 @@ function App() {
         <div className="flex items-center justify-center w-80 h-80 bg-slate-200 rounded-md p-6 m-6">
           <Weather weatherData={weatherData} />
         </div>
+        {showSignup ? (
+          <Signup handleSignup={handleSignup} />
+        ) : (
+          <div>
+            <h2 className="font-bold text-xl">User Information:</h2>
+            {userData && (
+              <div className="mt-4">
+                <p>
+                  <span className="font-semibold">Username:</span>{" "}
+                  {userData.username}
+                </p>
+                <p>
+                  <span className="font-semibold">Email:</span> {userData.email}
+                </p>
+                <p>
+                  <span className="font-semibold">Preferred Location:</span>{" "}
+                  {userData.preferredLocation.lat},{" "}
+                  {userData.preferredLocation.long}
+                </p>
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
