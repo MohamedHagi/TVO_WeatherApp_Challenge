@@ -36,14 +36,14 @@ function Signup({ handleSignup }) {
   return (
     <div>
       <form
-        className="flex flex-col bg-white rounded shadow-lg p-12 mt-12"
+        className="flex items-center flex-col bg-white rounded shadow-lg p-12 mt-12"
         onSubmit={handleSubmit}
       >
         <label className="font-semibold text-xs" htmlFor="usernameField">
           Username
         </label>
         <input
-          className="flex items-center h-12 px-4 w-64 bg-gray-200 mt-2 rounded focus:outline-none focus:ring-2"
+          className="flex items-center h-12 px-4 my-2 w-64 bg-gray-200 mt-2 rounded focus:outline-none focus:ring-2"
           type="text"
           id="usernameField"
           name="username"
@@ -51,8 +51,11 @@ function Signup({ handleSignup }) {
           onChange={handleChange}
           required
         />
+        <label className="font-semibold text-xs" htmlFor="usernameField">
+          Email
+        </label>
         <input
-          className="flex items-center h-12 px-4 w-64 bg-gray-200 mt-2 rounded focus:outline-none focus:ring-2"
+          className="flex items-center h-12 px-4 my-2 w-64 bg-gray-200 mt-2 rounded focus:outline-none focus:ring-2"
           type="email"
           id="emailField"
           name="email"
