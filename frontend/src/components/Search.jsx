@@ -76,7 +76,7 @@ export default function Search({ onSearchChange }) {
 
   return (
     // using material UI autocomplete component that is using the different cities that are suggested by the prefix given to the api from the user input
-    <div className=" p-6 m-6 rounded-md space-x-4 w-80">
+    <div className=" px-7 py-2 rounded-md space-x-4 w-80">
       <Autocomplete
         freeSolo
         options={options}
