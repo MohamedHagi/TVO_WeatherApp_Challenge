@@ -3,6 +3,7 @@ import axios from "axios";
 import Weather from "./components/Weather";
 import Search from "./components/Search";
 import Signup from "./components/Signup";
+import Signin from "./components/Signin";
 
 function App() {
   const [weatherData, setWeatherData] = useState(null);
@@ -12,7 +13,7 @@ function App() {
   }); //using toronto as default, with more time could use geolocationAPI to get users location on first load
 
   const [userData, setUserData] = useState(null);
-  const [showSignup, setShowSignup] = useState(true);
+  const [showSignup, setShowSignup] = useState(false);
 
   //fetching the current weather using the lat and lon
   useEffect(() => {
@@ -53,6 +54,20 @@ function App() {
     }
   };
 
+  const handleSignin = async (email) => {
+    try {
+      const response = await axios.post("/api/signin", { email });
+      const userDataFromResponse = response.data.user;
+      setUserData(userDataFromResponse);
+      setCoordinates((prevCoordinates) => ({
+        lat: userDataFromResponse.preferredLocation.lat,
+        lon: userDataFromResponse.preferredLocation.long,
+      }));
+    } catch (error) {
+      throw error;
+    }
+  };
+
   return (
     <div className="flex justify-around">
       <div className="flex items-center justify-center w-80 h-[100] flex-col">
@@ -63,26 +78,47 @@ function App() {
         </div>
       </div>
       <div>
-        {showSignup ? (
-          <Signup handleSignup={handleSignup} />
-        ) : (
+        {!userData && (
           <div>
-            <h2 className="font-bold text-xl">User Information:</h2>
-            {userData && (
-              <div className="mt-4">
-                <p>
-                  <span className="font-semibold">Username:</span>{" "}
-                  {userData.username}
-                </p>
-                <p>
-                  <span className="font-semibold">Email:</span> {userData.email}
-                </p>
-                <p>
-                  <span className="font-semibold">Preferred Location:</span>{" "}
-                  {weatherData.name}
-                </p>
-              </div>
+            {!showSignup ? (
+              <Signin
+                handleSignin={handleSignin}
+                setShowSignup={setShowSignup}
+              />
+            ) : (
+              <Signup
+                handleSignup={handleSignup}
+                setShowSignup={setShowSignup}
+              />
             )}
+          </div>
+        )}
+
+        {userData && (
+          <div class="bg-slate-200 mt-4 overflow-hidden shadow rounded-lg border">
+            <div class="px-4 py-5 sm:px-6">
+              <h3 class="text-lg leading-6 font-medium text-gray-900">
+                User Profile
+              </h3>
+            </div>
+            <div class="border-t border-gray-200 px-4 py-5 sm:p-0">
+              <dl class="sm:divide-y sm:divide-gray-200">
+                <div class="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt class="text-sm font-medium text-gray-500">Username</dt>
+                  <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                    {userData.username}
+                  </dd>
+                </div>
+                <div class="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt class="text-sm font-medium text-gray-500">
+                    Preferred Location
+                  </dt>
+                  <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                    {weatherData.name}
+                  </dd>
+                </div>
+              </dl>
+            </div>
           </div>
         )}
       </div>
