@@ -34,7 +34,7 @@ app.get("/api/cities", async (req, res) => {
       method: "GET",
       url: "https://wft-geo-db.p.rapidapi.com/v1/geo/cities",
       params: {
-        minPopulation: "1000000",
+        minPopulation: "100000",
         namePrefix: namePrefix,
       },
       headers: {
